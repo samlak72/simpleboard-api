@@ -10,9 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -23,19 +21,20 @@ public class SampleController {
     @Autowired
     SimpleBoardService simpleBoardService;
 
-    @RequestMapping("/hello")
+    @RequestMapping("/api/v1/hello")
     public Hello hello(){
-        return new Hello("samlak", "Hello",LocalDate.now(),LocalTime.now());
+        LocalTime time = LocalTime.of(LocalTime.now().getHour(),LocalTime.now().getMinute(),LocalTime.now().getSecond());
+        return new Hello("samlak", "Hello",LocalDate.now(),time);
     }
 
-    @RequestMapping("/findAll")
-    public Page<SimpleBoard> findAll(Pageable pageable){
+    @GetMapping("/api/v1/simpleboards/{page}")
+    public Page<SimpleBoard> findAll(@PathVariable int page, Pageable pageable){
 
-        pageable = PageRequest.of(pageable.getPageNumber(),pageable.getPageSize(), Sort.by("id").descending());
+        pageable = PageRequest.of(page,pageable.getPageSize(), Sort.by("id").descending());
         return simpleBoardService.findAll(pageable);
     }
 
-    @RequestMapping("/saveMessage")
+    @PostMapping("/api/v1/simpleboard")
     public Result saveMessage(@RequestBody SimpleBoard simpleBoard){
         Result result = new Result(200,"Success!");
         try{
