@@ -47,6 +47,33 @@ public class SampleController {
         return result;
     }
 
+    @PutMapping("/api/v1/simpleboard")
+    public Result updateMessage(@RequestBody SimpleBoard simpleBoard){
+        Result result = new Result(200,"Success!");
+        try{
+            simpleBoardService.save(simpleBoard);
+        }catch(Exception e){
+            e.printStackTrace();
+            result = new Result(500, "Error!");
+        }
+
+        return result;
+    }
+
+    @DeleteMapping("/api/v1/simpleboard")
+    @ResponseBody
+    public Result deleteMessage(@RequestBody SimpleBoard simpleBoard ){
+        Result result = new Result(200,"Success!");
+        try{
+            simpleBoardService.remove(simpleBoard);
+        }catch(Exception e){
+            e.printStackTrace();
+            result = new Result(500, "Error!");
+        }
+
+        return result;
+    }
+
 }
 
 @Setter
