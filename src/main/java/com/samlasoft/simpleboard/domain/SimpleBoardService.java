@@ -19,4 +19,10 @@ public class SimpleBoardService {
     public Page<SimpleBoard> findAll(Pageable pageable){
         return repository.findAll(pageable);
     }
+
+    public void remove(SimpleBoard simpleBoard) {repository.delete(simpleBoard);}
+
+    public SimpleBoard findById(Long id) {
+        return repository.findById(id).orElseThrow();
+    }
 }
